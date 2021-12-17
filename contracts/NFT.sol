@@ -16,7 +16,7 @@ contract NFT is ERC721URIStorage {
     constructor(address marketplaceAddress) ERC721("CME Tokens", "CMET") {
         contractAddress = marketplaceAddress;
     }
-
+    //mint the NFT into the chain.
     function createToken(string memory tokenURI) public returns (uint) {
         _tokenIds.increment();
         uint256 newItemId = _tokenIds.current();
