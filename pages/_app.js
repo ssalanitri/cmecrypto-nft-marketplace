@@ -1,37 +1,110 @@
-import '../styles/globals.css'
-import Link from 'next/link'
+/*!
 
-function Marketplace({ Component, pageProps }) {
-  return (
-    <div>
-      <nav className="border-b p-6">
-        <p className="text-4xl font-bold">CME Marketplace</p>
-        <div className="flex mt-4">
-          <Link href="/">
-            <a className="mr-4 text-pink-500">
-              Home
-            </a>
-          </Link>
-          <Link href="/create-item">
-            <a className="mr-6 text-pink-500">
-              Sell Digital Asset
-            </a>
-          </Link>
-          <Link href="/my-assets">
-            <a className="mr-6 text-pink-500">
-              My Digital Assets
-            </a>
-          </Link>
-          <Link href="/creator-dashboard">
-            <a className="mr-6 text-pink-500">
-              Creator Dashboard
-            </a>
-          </Link>
-        </div>
-      </nav>
-      <Component {...pageProps} />
-    </div>
-  )
+=========================================================
+* NextJS Material Dashboard v1.1.0 based on Material Dashboard React v1.9.0
+=========================================================
+
+* Product Page: https://www.creative-tim.com/product/nextjs-material-dashboard
+* Copyright 2021 Creative Tim (https://www.creative-tim.com)
+* Licensed under MIT (https://github.com/creativetimofficial/nextjs-material-dashboard/blob/master/LICENSE.md)
+
+* Coded by Creative Tim
+
+=========================================================
+
+* The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
+
+*/
+import React from "react";
+import ReactDOM from "react-dom";
+import App from "next/app";
+import Head from "next/head";
+import Router from "next/router";
+import "../assets/css/nextjs-material-dashboard.css?v=1.1.0";
+
+import PageChange from "../components/PageChange/PageChange.js";
+
+Router.events.on("routeChangeStart", (url) => {
+  console.log(`Loading: ${url}`);
+  document.body.classList.add("body-page-transition");
+
+  ReactDOM.render(
+    <PageChange path={url} />,
+    document.getElementById("page-transition")
+  );
+});
+
+Router.events.on("routeChangeComplete", () => {
+  ReactDOM.unmountComponentAtNode(document.getElementById("page-transition"));
+  document.body.classList.remove("body-page-transition");
+});
+Router.events.on("routeChangeError", () => {
+  ReactDOM.unmountComponentAtNode(document.getElementById("page-transition"));
+  document.body.classList.remove("body-page-transition");
+});
+
+export default class Home extends App {
+  componentDidMount() {
+    let comment = document.createComment(`
+
+=========================================================
+* * NextJS Material Dashboard v1.1.0 based on Material Dashboard React v1.9.0
+=========================================================
+
+* Product Page: https://www.creative-tim.com/product/nextjs-material-dashboard
+* Copyright 2021 Creative Tim (https://www.creative-tim.com)
+* Licensed under MIT (https://github.com/creativetimofficial/nextjs-material-dashboard/blob/master/LICENSE.md)
+
+* Coded by Creative Tim
+
+=========================================================
+
+* The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
+
+`);
+    document.insertBefore(comment, document.documentElement);
+  }
+  static async getInitialProps({ Component, router, ctx }) {
+    let pageProps = {};
+
+    if (Component.getInitialProps) {
+      pageProps = await Component.getInitialProps(ctx);
+    }
+
+    return { pageProps };
+  }
+
+  render() {
+    const { Component, pageProps } = this.props;
+
+    const Layout = Component.layout || (({ children }) => <>{children}</>);
+
+    return (
+      <>
+        <Head>
+          <meta
+            name="viewport"
+            content="width=device-width, initial-scale=1, shrink-to-fit=no"
+          />
+          <link
+            rel="shortcut icon"
+            href={require("../assets/img/favicon.png")}
+          />
+          <link
+            rel="apple-touch-icon"
+            sizes="76x76"
+            href={require("../assets/img/apple-icon.png")}
+          />
+          {/* Fonts and icons */}
+          <link
+            href="https://fonts.googleapis.com/icon?family=Material+Icons"
+            rel="stylesheet"
+          />
+        </Head>
+        <Layout>
+          <Component {...pageProps} />
+        </Layout>
+      </>
+    );
+  }
 }
-
-export default Marketplace
